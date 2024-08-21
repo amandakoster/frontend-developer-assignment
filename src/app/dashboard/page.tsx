@@ -18,16 +18,19 @@ const Dashboard: React.FC = () => {
 
   if (!isAuthenticated) return null;
 
+  const cardClass =
+    "p-4 m-4 border-2 border-indigo-600 bg-white rounded shadow";
+
   return (
-    <div className="min-h-screen p-6 bg-gray-100">
+    <div className="min-h-screen  bg-gray-100">
       <NavBar />
-      <div className="flex justify-between mb-6">
+      {/* <div className="flex justify-between mb-6">
         <h1 className="text-3xl font-bold">Dashboard Cards</h1>
-      </div>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div className="p-4 bg-white rounded shadow">Card 1</div>
-        <div className="p-4 bg-white rounded shadow">Card 2</div>
-        <div className="p-4 bg-white rounded shadow">Card 3</div>
+      </div> */}
+      <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+        <div className={cardClass}>Card 1</div>
+        <div className={cardClass}>Card 2</div>
+        <div className={cardClass}>Card 3</div>
       </div>
     </div>
   );
