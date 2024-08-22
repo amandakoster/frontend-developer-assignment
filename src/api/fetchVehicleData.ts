@@ -1,5 +1,5 @@
 import { VehicleData } from "@/types";
-import { mockVehicleData } from "@/mock/mockData";
+import { mockVehicleData } from "@/mockData/mockVehicleData";
 
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/getData";

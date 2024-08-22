@@ -19,7 +19,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // Check if token exists/user is logged in
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-    console.log({ token });
     if (token) {
       setIsAuthenticated(true);
     }
@@ -27,7 +26,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Basic mock auth using localStorage
   const login = (username: string, password: string) => {
-    if (username === "username" && password === "password") {
+    if (username === "lar5" && password === "mari0") {
       localStorage.setItem("auth-token", "mock-token");
       setIsAuthenticated(true);
     } else {
@@ -39,7 +38,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     localStorage.removeItem("auth-token");
     setIsAuthenticated(false);
   };
-  console.log({ isAuthenticated });
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
