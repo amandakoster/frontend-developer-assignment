@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useAuth } from "@/context/AuthContext";
 import NavBar from "@/components/NavBar";
+import { fetchVehicleData } from "@/api/fetchVehicleData";
+import { VehicleData } from "@/types";
 
 const Dashboard: React.FC = () => {
   const { isAuthenticated, logout } = useAuth();
