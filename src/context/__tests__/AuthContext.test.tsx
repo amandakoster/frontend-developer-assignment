@@ -17,7 +17,7 @@ const mockLocalStorage = {
 // Replaces the global `localStorage` object with the mock implementation.
 Object.defineProperty(window, "localStorage", { value: mockLocalStorage });
 
-// A wrapper component to provide the AuthContext to the 'TestComponent')
+// A wrapper component to provide the AuthContext to the 'TestComponent' )
 interface WrapperProps {
   children: ReactNode;
 }
@@ -70,6 +70,27 @@ describe("AuthContext", () => {
 
     expect(screen.getByText("Logged out")).toBeInTheDocument();
     expect(window.alert).toHaveBeenCalledWith("Invalid credentials");
+  });
+
+  it("should log out correctly", async () => {
+    const TestLogoutComponent: React.FC = () => {
+      const auth = useAuth();
+
+      useEffect(() => {
+        auth.login("username", "password");
+        auth.logout();
+      }, [auth]);
+      return <div>{auth.isAuthenticated ? "Logged in" : "Logged out"}</div>;
+    };
+
+    render(
+      <Wrapper>
+        <TestLogoutComponent />
+      </Wrapper>
+    );
+
+    expect(screen.getByText("Logged out")).toBeInTheDocument;
+    expect(mockLocalStorage.removeItem).toHaveBeenCalledWith("auth-token");
   });
 
   it("should throw an error if useAuth is used outside of AuthProvider", () => {
