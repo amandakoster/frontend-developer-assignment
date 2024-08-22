@@ -32,12 +32,14 @@ const AuthForm: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
+          placeholder="Enter username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           className="mb-2 p-2 border rounded"
         />
         <input
           type="text"
+          placeholder="Enter password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="mb-2 p-2 border rounded"
