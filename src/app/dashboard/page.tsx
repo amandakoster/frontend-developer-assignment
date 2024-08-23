@@ -6,6 +6,8 @@ import { useAuth } from "@/context/AuthContext";
 import NavBar from "@/components/NavBar";
 import { fetchVehicleData } from "@/api/fetchVehicleData";
 import { VehicleData } from "@/types";
+import BarChart from "@/components/charts/BarChart";
+import { reduceVehicleData } from "@/utils/dataMethods";
 
 const Dashboard: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -35,6 +37,9 @@ const Dashboard: React.FC = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
+  const classificationCounts = reduceVehicleData(vehicleData, "classification");
+  const axleCounts = reduceVehicleData(vehicleData, "axles");
+
   const tableCellClass = "px-4 py-2 border text-sm";
 
   return (
@@ -42,7 +47,7 @@ const Dashboard: React.FC = () => {
       <NavBar />
       <div className="p-4 m-4">
         <h1 className="text-3xl font-light uppercase text-primary mb-4">
-          Vehicle Data
+          vehicle transactions
         </h1>
         <table className="min-w-full bg-white border">
           <thead>
@@ -64,6 +69,11 @@ const Dashboard: React.FC = () => {
             ))}
           </tbody>
         </table>
+
+        <BarChart
+          labels={Object.keys(classificationCounts)}
+          data={Object.values(classificationCounts)}
+        />
       </div>
     </div>
   );
