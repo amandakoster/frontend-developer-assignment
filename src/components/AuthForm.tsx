@@ -3,6 +3,9 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+
 import { useAuth } from "@/context/AuthContext";
 
 const AuthForm: React.FC = () => {
@@ -32,6 +35,8 @@ const AuthForm: React.FC = () => {
     setShowPassword((prevState) => !prevState);
   };
 
+  const inputClass = "text-sm w-full p-4  placeholder-gray-300";
+
   return (
     <>
       <Image
@@ -43,9 +48,10 @@ const AuthForm: React.FC = () => {
         className="absolute inset-0 z-0 opacity-50"
       />
       <div className="relative min-h-screen flex items-center justify-center">
-        <div className="relative z-10 bg-lightGray p-10 rounded-lg shadow-lg transform scale-125">
-          <h2 className="text-3xl font-bold text-primary mb-4">
-            {isAuthenticated ? "Logout" : "Login"}
+        <div className="relative z-10 bg-lightGray p-10  shadow-lg transform scale-125">
+          <h2 className="font-light text-lg uppercase text-gray-600 mb-4">
+            {/* {isAuthenticated ? "Logout" : "Login"} */}
+            Welcome to Sinelec USA
           </h2>
           <form onSubmit={handleSubmit}>
             <div className="relative mb-4">
@@ -54,7 +60,7 @@ const AuthForm: React.FC = () => {
                 placeholder="Enter username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full p-4 border border-darkGray rounded-md"
+                className={inputClass}
               />
             </div>
             <div className="relative mb-4">
@@ -63,19 +69,22 @@ const AuthForm: React.FC = () => {
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-4 border border-darkGray rounded-md"
+                className={inputClass}
               />
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute right-4 top-4 text-primary"
+                className="text-xs absolute right-4 top-5 text-primary"
               >
-                {showPassword ? "Hide" : "Show"}
+                <FontAwesomeIcon
+                  icon={showPassword ? faEyeSlash : faEye}
+                  size="lg"
+                />
               </button>
             </div>
             <button
               type="submit"
-              className="w-full p-4 bg-primary text-white font-bold rounded-md hover:bg-secondary"
+              className="text-sm w-full p-4 bg-primary text-white rounded-md hover:bg-secondary"
             >
               {isAuthenticated ? "Logout" : "Login"}
             </button>

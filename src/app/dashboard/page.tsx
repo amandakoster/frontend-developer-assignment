@@ -3,82 +3,70 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import NavBar from "@/components/NavBar";
+import { fetchVehicleData } from "@/api/fetchVehicleData";
+import { VehicleData } from "@/types";
 
-const AuthForm: React.FC = () => {
-  const { isAuthenticated, login, logout } = useAuth();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+const Dashboard: React.FC = () => {
+  const { isAuthenticated } = useAuth();
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (isAuthenticated) {
-      logout();
+  const [vehicleData, setVehicleData] = useState<VehicleData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
       router.push("./");
     } else {
-      login(username, password);
-    }
-  };
-
-  // Only push to dashboard AFTER user is authenticated. Fixes immediate re-route
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.push("./dashboard");
+      fetchVehicleData()
+        .then((data) => {
+          setVehicleData(data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          setError("Failed to load vehicle data");
+          setLoading(false);
+        });
     }
   }, [isAuthenticated, router]);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevState) => !prevState);
-  };
+  if (!isAuthenticated) return null;
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
+  const tableCellClass = "px-4 py-2 border text-sm";
 
   return (
-    <div className="flex min-h-screen">
-      <div className="flex flex-col justify-center w-full md:w-1/2 p-8 bg-lightGray">
-        <h2 className="text-3xl font-bold text-primary mb-4">Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="relative mb-4">
-            <input
-              type="text"
-              placeholder="Enter username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full p-4 border border-darkGray rounded-md"
-            />
-          </div>
-          <div className="relative mb-4">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-4 border border-darkGray rounded-md"
-            />
-            <button
-              type="button"
-              onClick={togglePasswordVisibility}
-              className="absolute right-4 top-4 text-primary"
-            >
-              {showPassword ? "Hide" : "Show"}
-            </button>
-          </div>
-          <button
-            type="submit"
-            className="w-full p-4 bg-primary text-white font-bold rounded-md hover:bg-secondary"
-          >
-            {isAuthenticated ? "Logout" : "Login"}
-          </button>
-        </form>
-      </div>
-      <div className="hidden md:block w-1/2">
-        {/* <img
-          src="/path-to-your-image.jpg" // Ensure to replace with the correct path to your image
-          alt="Branding"
-          className="object-cover h-full w-full"
-        /> */}
+    <div className="min-h-screen bg-gray-100">
+      <NavBar />
+      <div className="p-4 m-4">
+        <h1 className="text-3xl font-light uppercase text-primary mb-4">
+          Vehicle Data Dashboard
+        </h1>
+        <table className="min-w-full bg-white border">
+          <thead>
+            <tr>
+              <th className={tableCellClass}>Timestamp</th>
+              <th className={tableCellClass}>Classification</th>
+              <th className={tableCellClass}>Axles</th>
+              <th className={tableCellClass}>Height</th>
+            </tr>
+          </thead>
+          <tbody>
+            {vehicleData.map((vehicle, index) => (
+              <tr key={index}>
+                <td className={tableCellClass}>{vehicle.timestamp}</td>
+                <td className={tableCellClass}>{vehicle.classification}</td>
+                <td className={tableCellClass}>{vehicle.axles}</td>
+                <td className={tableCellClass}>{vehicle.height}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 };
 
-export default AuthForm;
+export default Dashboard;

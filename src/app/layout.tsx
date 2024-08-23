@@ -1,11 +1,11 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google"; // Import Montserrat
 
 import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"] }); // Use Montserrat with specific weights
 
 export const metadata: Metadata = {
   title: "frontend-developer-assignment",
@@ -19,7 +19,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={montserrat.className}>
+        {/* Apply Montserrat - Sinelec font */}
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
