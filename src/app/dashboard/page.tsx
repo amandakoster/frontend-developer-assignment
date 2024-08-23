@@ -6,7 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import NavBar from "@/components/NavBar";
 import { fetchVehicleData } from "@/api/fetchVehicleData";
 import { VehicleData } from "@/types";
-import BarChart from "@/components/charts/BarChart";
+import { BarChart } from "@/components/charts/Charts";
 import { reduceVehicleData } from "@/utils/dataMethods";
 
 const Dashboard: React.FC = () => {
@@ -23,7 +23,12 @@ const Dashboard: React.FC = () => {
     } else {
       fetchVehicleData()
         .then((data) => {
-          setVehicleData(data);
+          // Add a unique ID to each record
+          const dataWithIds = data.map((vehicle, index) => ({
+            ...vehicle,
+            id: index + 1,
+          }));
+          setVehicleData(dataWithIds);
           setLoading(false);
         })
         .catch((error) => {
@@ -38,7 +43,6 @@ const Dashboard: React.FC = () => {
   if (error) return <div>{error}</div>;
 
   const classificationCounts = reduceVehicleData(vehicleData, "classification");
-  const axleCounts = reduceVehicleData(vehicleData, "axles");
 
   const tableCellClass = "px-4 py-2 border text-sm";
 
@@ -47,33 +51,41 @@ const Dashboard: React.FC = () => {
       <NavBar />
       <div className="p-4 m-4">
         <h1 className="text-3xl font-light uppercase text-primary mb-4">
-          vehicle transactions
+          Vehicle Transactions
         </h1>
-        <table className="min-w-full bg-white border">
-          <thead>
-            <tr>
-              <th className={tableCellClass}>Timestamp</th>
-              <th className={tableCellClass}>Classification</th>
-              <th className={tableCellClass}>Axles</th>
-              <th className={tableCellClass}>Height</th>
-            </tr>
-          </thead>
-          <tbody>
-            {vehicleData.map((vehicle, index) => (
-              <tr key={index}>
-                <td className={tableCellClass}>{vehicle.timestamp}</td>
-                <td className={tableCellClass}>{vehicle.classification}</td>
-                <td className={tableCellClass}>{vehicle.axles}</td>
-                <td className={tableCellClass}>{vehicle.height}</td>
+        <div className="overflow-auto" style={{ maxHeight: "400px" }}>
+          <table className="min-w-full bg-white border">
+            <thead>
+              <tr>
+                {/* TODO: DRY table */}
+                <th className={tableCellClass}>ID</th>
+                <th className={tableCellClass}>Timestamp</th>
+                <th className={tableCellClass}>Classification</th>
+                <th className={tableCellClass}>Axles</th>
+                <th className={tableCellClass}>Height</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {/* TODO: DRY table */}
+              {vehicleData.map((vehicle, index) => (
+                <tr key={index}>
+                  <td className={tableCellClass}>{vehicle.id}</td>
+                  <td className={tableCellClass}>{vehicle.timestamp}</td>
+                  <td className={tableCellClass}>{vehicle.classification}</td>
+                  <td className={tableCellClass}>{vehicle.axles}</td>
+                  <td className={tableCellClass}>{vehicle.height}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-        <BarChart
-          labels={Object.keys(classificationCounts)}
-          data={Object.values(classificationCounts)}
-        />
+        <div className="mt-8">
+          <BarChart
+            labels={Object.keys(classificationCounts)}
+            data={Object.values(classificationCounts)}
+          />
+        </div>
       </div>
     </div>
   );

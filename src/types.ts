@@ -5,6 +5,7 @@ export enum Classification {
 }
 
 export interface VehicleData {
+  id?: number;
   timestamp: string;
   classification: Classification;
   axles: number;
