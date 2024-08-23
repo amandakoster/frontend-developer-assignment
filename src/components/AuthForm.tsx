@@ -35,7 +35,8 @@ const AuthForm: React.FC = () => {
     setShowPassword((prevState) => !prevState);
   };
 
-  const inputClass = "text-sm w-full p-4  placeholder-gray-300";
+  const inputClass =
+    "text-sm w-full p-4 hover:bg-neutral-200 placeholder-gray-300 focus:outline-none transition duration-300";
 
   return (
     <>
@@ -84,7 +85,7 @@ const AuthForm: React.FC = () => {
             </div>
             <button
               type="submit"
-              className="text-sm w-full p-4 bg-primary text-white rounded-md hover:bg-secondary"
+              className="text-sm w-full p-4 bg-primary text-white rounded-md hover:bg-secondary transition duration-300"
             >
               {isAuthenticated ? "Logout" : "Login"}
             </button>

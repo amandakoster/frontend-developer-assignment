@@ -42,7 +42,7 @@ const Dashboard: React.FC = () => {
       <NavBar />
       <div className="p-4 m-4">
         <h1 className="text-3xl font-light uppercase text-primary mb-4">
-          Vehicle Data Dashboard
+          Vehicle Data
         </h1>
         <table className="min-w-full bg-white border">
           <thead>

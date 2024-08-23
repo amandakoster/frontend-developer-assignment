@@ -6,7 +6,7 @@ module.exports = {
   theme: {
    extend: {
       colors: {
-        primary: '#0073E6', // Primary Blue
+        primary: '#005ABB', // Primary Blue
         secondary: '#004B8D', // Secondary Blue
         lightGray: '#F5F5F5', // Light Gray
         darkGray: '#333333', // Dark Gray
@@ -17,4 +17,3 @@ module.exports = {
   },
   plugins: [],
 }
-

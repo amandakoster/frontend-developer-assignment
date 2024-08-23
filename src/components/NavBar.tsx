@@ -25,7 +25,7 @@ const NavBar: React.FC = () => {
       </h1>
       <button
         onClick={handleLogout}
-        className="px-4 py-2 bg-lightGray rounded hover:bg-accentGreen text-darkGray"
+        className="px-4 py-2 bg-lightGray text-darkGray rounded hover:bg-darkGray hover:text-lightGray transition duration-300"
       >
         {isAuthenticated ? "Logout" : "Login"}
       </button>
