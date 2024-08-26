@@ -43,10 +43,10 @@ const AuthForm: React.FC = () => {
       <Image
         src="/images/auth.png"
         alt="Branding"
-        layout="fill"
+        fill
         objectFit="cover"
-        priority
         className="absolute inset-0 z-0 opacity-50"
+        priority
       />
       <div className="relative min-h-screen flex items-center justify-center">
         <div className="relative z-10 bg-lightGray p-10  shadow-lg transform scale-125">

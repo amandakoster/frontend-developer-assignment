@@ -2,6 +2,8 @@ import React from "react";
 import { Bar, Pie, Line } from "react-chartjs-2";
 import { ChartData, ChartOptions } from "chart.js";
 
+import { primaryBlue, accentGreen, mustardYellow } from "@/utils/colors";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -45,14 +47,28 @@ const BarChart: React.FC<BarChartProps> = ({
     labels,
     datasets: [
       {
-        label: "Data",
+        label: "",
         data,
-        backgroundColor: backgroundColor || ["#0073E6", "#004B8D", "#66BB6A"],
+        backgroundColor: backgroundColor || [
+          primaryBlue,
+          mustardYellow,
+          accentGreen,
+        ],
       },
     ],
   };
 
-  return <Bar data={chartData} options={options} />;
+  const chartOptions: ChartOptions<"bar"> = {
+    ...options,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      ...options?.plugins,
+    },
+  };
+
+  return <Bar data={chartData} options={chartOptions} />;
 };
 
 interface PieChartProps {
@@ -74,7 +90,11 @@ const PieChart: React.FC<PieChartProps> = ({
       {
         label: "Data",
         data,
-        backgroundColor: backgroundColor || ["#0073E6", "#004B8D", "#66BB6A"],
+        backgroundColor: backgroundColor || [
+          primaryBlue,
+          mustardYellow,
+          accentGreen,
+        ],
       },
     ],
   };
@@ -84,26 +104,18 @@ const PieChart: React.FC<PieChartProps> = ({
 
 interface LineChartProps {
   labels: string[];
-  data: number[];
-  backgroundColor?: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    borderColor: string;
+  }[];
   options?: ChartOptions<"line">;
 }
 
-const LineChart: React.FC<LineChartProps> = ({
-  labels,
-  data,
-  backgroundColor,
-  options,
-}) => {
+const LineChart: React.FC<LineChartProps> = ({ labels, datasets, options }) => {
   const chartData: ChartData<"line"> = {
     labels,
-    datasets: [
-      {
-        label: "Data",
-        data,
-        backgroundColor: backgroundColor || ["#0073E6", "#004B8D", "#66BB6A"],
-      },
-    ],
+    datasets,
   };
 
   return <Line data={chartData} options={options} />;

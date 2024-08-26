@@ -1,4 +1,4 @@
-import { reduceVehicleData } from "../dataMethods";
+import { reduceVehicleData } from "../dataUtils";
 import { mockVehicleData } from "@/mockData/mockVehicleData";
 
 describe("reduceVehicleData", () => {

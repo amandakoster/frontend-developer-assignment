@@ -6,8 +6,10 @@ import { useAuth } from "@/context/AuthContext";
 import NavBar from "@/components/NavBar";
 import { fetchVehicleData } from "@/api/fetchVehicleData";
 import { VehicleData } from "@/types";
-import { BarChart } from "@/components/charts/Charts";
-import { reduceVehicleData } from "@/utils/dataMethods";
+import { BarChart, LineChart } from "@/components/charts/Charts";
+import ChartLegend from "@/components/ChartLegend";
+import { reduceVehicleData, reduceTimestampData } from "@/utils/dataUtils";
+import { primaryBlue, mustardYellow, accentGreen } from "@/utils/colors";
 
 const Dashboard: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -42,7 +44,14 @@ const Dashboard: React.FC = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
+  const classifications = [
+    { label: "car", color: primaryBlue },
+    { label: "truck", color: mustardYellow },
+    { label: "bike", color: accentGreen },
+  ];
+
   const classificationCounts = reduceVehicleData(vehicleData, "classification");
+  const processedTimeData = reduceTimestampData(vehicleData);
 
   const tableCellClass = "px-4 py-2 border text-sm";
 
@@ -79,12 +88,44 @@ const Dashboard: React.FC = () => {
             </tbody>
           </table>
         </div>
-
-        <div className="mt-8">
-          <BarChart
-            labels={Object.keys(classificationCounts)}
-            data={Object.values(classificationCounts)}
-          />
+        <ChartLegend classifications={classifications} />
+        <div className="grid grid-cols-1 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 gap-4 mt-8">
+          <div className="w-full h-64 mt-8">
+            <BarChart
+              labels={Object.keys(classificationCounts)}
+              data={Object.values(classificationCounts)}
+            />
+          </div>
+          {/* LineChart for Classification vs. Axles over Time */}
+          <div className="w-full h-64 mt-8">
+            <LineChart
+              labels={processedTimeData.labels}
+              datasets={processedTimeData.datasets}
+              options={{
+                responsive: true,
+                plugins: {
+                  title: {
+                    display: true,
+                    text: "Axles over Time by Classification",
+                  },
+                },
+                scales: {
+                  x: {
+                    title: {
+                      display: true,
+                      text: "Time",
+                    },
+                  },
+                  y: {
+                    title: {
+                      display: true,
+                      text: "Axles",
+                    },
+                  },
+                },
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>

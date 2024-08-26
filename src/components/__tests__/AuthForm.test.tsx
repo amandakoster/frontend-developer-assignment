@@ -58,7 +58,7 @@ describe("AuthForm", () => {
     expect(mockPush).toHaveBeenCalledWith("./dashboard");
   });
 
-  it("Should call logout and redirect to home page when submitted while authteticated", () => {
+  it("Should call logout and redirect to home page when submitted while authenticated", () => {
     (useAuth as jest.Mock).mockReturnValue({
       isAuthenticated: true,
       login: mockLogin,
