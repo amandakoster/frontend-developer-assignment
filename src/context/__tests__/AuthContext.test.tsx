@@ -3,6 +3,14 @@ import { render, screen } from "@testing-library/react";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import "@testing-library/jest-dom";
 
+beforeAll(() => {
+  jest.spyOn(window, "alert").mockImplementation(() => {});
+});
+
+afterAll(() => {
+  jest.restoreAllMocks();
+});
+
 // Mock the localStorage so that when the AuthContext interacts with it,
 // the operations are recorded and can be tested.
 const mockLocalStorage = {
@@ -46,11 +54,16 @@ describe("AuthContext", () => {
 
   // Render the `TestComponent` within the `AuthProvider` context.
   it("should log in correctly", async () => {
+    console.log = jest.fn(); // Mock console.log to capture output if needed
+
     render(
       <Wrapper>
-        <TestComponent />
+        <TestComponent username="lar5" password="mari0" />
       </Wrapper>
     );
+
+    // Add a delay to allow the useEffect to complete
+    await screen.findByText("Logged in");
 
     expect(screen.getByText("Logged in")).toBeInTheDocument();
     expect(mockLocalStorage.setItem).toHaveBeenCalledWith(

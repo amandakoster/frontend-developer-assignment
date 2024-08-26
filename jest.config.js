@@ -9,10 +9,19 @@ module.exports = {
   },
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  collectCoverage: true, // Enable coverage collection
-  coverageDirectory: 'coverage', // Specify the directory to output coverage reports
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  coverageThreshold: {
+  global: {
+    branches: 0,
+    functions: 0,
+    lines: 0,
+    statements: 0,
+  },
+},
   collectCoverageFrom: [
-    'src/**/*.{ts,tsx}', // Specify which files to collect coverage from
-    '!src/**/*.d.ts', // Exclude TypeScript declaration files
+    'src/**/*.{ts,tsx}',
+    '!src/**/*.d.ts',
   ],
+  coverageReporters: ['text', 'lcov'],  // Add 'text' for terminal output and 'lcov' for detailed HTML report
 };

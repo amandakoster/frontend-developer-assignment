@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "jsx": "preserve", // Use "react-jsx" if you're using React 17+ with TypeScript 4.1+
+    "jsx": "react",
     "target": "esnext",
     "module": "esnext",
     "esModuleInterop": true,
