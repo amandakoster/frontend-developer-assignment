@@ -1,5 +1,15 @@
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import moment from "moment";
+
 import { VehicleData } from "@/types";
-import { getYearColor } from "./colorUtils";
+import { accentGreen, mustardYellow, primaryBlue } from "./colors";
+
+dayjs.extend(utc);
+
+export function formatTimestamp(timestamp: string): string {
+  return dayjs.utc(timestamp).format("MM/DD/YY - h:mm A");
+}
 
 export function reduceVehicleData<T extends keyof VehicleData>(
   data: VehicleData[],
@@ -23,32 +33,35 @@ export function reduceTimestampData(data: VehicleData[]): {
 } {
   return data.reduce(
     (acc, vehicle) => {
-      const classification = vehicle.classification; // Extract classification
-      const time = vehicle.timestamp.split("T")[1].split("Z")[0]; // Extract time
+      const classification = vehicle.classification;
+      const time = vehicle.timestamp; // Keep the full timestamp
 
       if (!acc.labels.includes(time)) {
         acc.labels.push(time);
       }
 
-      const classIndex = acc.datasets.findIndex(
+      const colorMap = {
+        car: primaryBlue,
+        truck: mustardYellow,
+        bike: accentGreen,
+      };
+
+      let dataset = acc.datasets.find(
         (dataset) => dataset.label === classification
       );
 
-      if (classIndex === -1) {
-        acc.datasets.push({
+      if (!dataset) {
+        dataset = {
           label: classification,
           data: Array(acc.labels.length).fill(0),
-          borderColor: getYearColor(classification),
+          borderColor: colorMap[classification],
           fill: false,
-        });
+        };
+        acc.datasets.push(dataset);
       }
 
-      acc.datasets.forEach((dataset) => {
-        if (dataset.label === classification) {
-          const timeIndex = acc.labels.indexOf(time);
-          dataset.data[timeIndex] = vehicle.axles;
-        }
-      });
+      const timeIndex = acc.labels.indexOf(time);
+      dataset.data[timeIndex] = vehicle.axles;
 
       return acc;
     },
@@ -63,3 +76,21 @@ export function reduceTimestampData(data: VehicleData[]): {
     }
   );
 }
+
+export function formatTimestampRegex(timestamp: string): string {
+  return new Date(timestamp)
+    .toISOString()
+    .replace(/T/, " ")
+    .replace(/\..+/, "")
+    .replace(/-/g, "/")
+    .replace(/:\d\d$/, "");
+}
+
+export const formatTimestampMoment = (timestamp: string): string => {
+  const parsedMoment = moment.utc(timestamp);
+  if (!parsedMoment.isValid()) {
+    console.error(`Invalid Date encountered: ${timestamp}`);
+    return "Invalid Date";
+  }
+  return parsedMoment.local().format("MM/DD/YY - h:mm A");
+};

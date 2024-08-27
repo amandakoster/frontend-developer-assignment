@@ -3,6 +3,8 @@ import { Bar, Pie, Line } from "react-chartjs-2";
 import { ChartData, ChartOptions } from "chart.js";
 
 import { primaryBlue, accentGreen, mustardYellow } from "@/utils/colors";
+import { formatTimestamp } from "@/utils/dataUtils";
+import { mockVehicleData } from "@/mockData/mockVehicleData";
 
 import {
   Chart as ChartJS,
@@ -15,7 +17,9 @@ import {
   Title,
   Tooltip,
   Legend,
+  Filler,
 } from "chart.js";
+import moment from "moment";
 
 // Register the necessary chart types and components
 ChartJS.register(
@@ -27,18 +31,23 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler // Registering Filler plugin
+);
+
+const formattedTimestamps = mockVehicleData.map((vehicle) =>
+  formatTimestamp(vehicle.timestamp)
 );
 
 interface BarChartProps {
-  labels: string[];
+  labels?: string[];
   data: number[];
   backgroundColor?: string[];
   options?: ChartOptions<"bar">;
 }
 
 const BarChart: React.FC<BarChartProps> = ({
-  labels,
+  labels = formattedTimestamps,
   data,
   backgroundColor,
   options,
@@ -72,14 +81,14 @@ const BarChart: React.FC<BarChartProps> = ({
 };
 
 interface PieChartProps {
-  labels: string[];
+  labels?: string[];
   data: number[];
   backgroundColor?: string[];
   options?: ChartOptions<"pie">;
 }
 
 const PieChart: React.FC<PieChartProps> = ({
-  labels,
+  labels = formattedTimestamps,
   data,
   backgroundColor,
   options,
@@ -103,7 +112,7 @@ const PieChart: React.FC<PieChartProps> = ({
 };
 
 interface LineChartProps {
-  labels: string[];
+  labels?: string[];
   datasets: {
     label: string;
     data: number[];
@@ -112,13 +121,105 @@ interface LineChartProps {
   options?: ChartOptions<"line">;
 }
 
-const LineChart: React.FC<LineChartProps> = ({ labels, datasets, options }) => {
+const LineChart: React.FC<LineChartProps> = ({
+  labels = formattedTimestamps,
+  datasets,
+  options,
+}) => {
   const chartData: ChartData<"line"> = {
     labels,
     datasets,
   };
 
-  return <Line data={chartData} options={options} />;
+  const defaultOptions: ChartOptions<"line"> = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Axles over Time by Classification",
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Time",
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Axles",
+        },
+      },
+    },
+  };
+
+  return <Line data={chartData} options={{ ...defaultOptions, ...options }} />;
 };
 
-export { BarChart, PieChart, LineChart };
+const StackedBarChart: React.FC<StackedBarChartProps> = ({
+  labels,
+  datasets,
+  options,
+}) => {
+  const chartData: ChartData<"bar"> = {
+    labels, // Use raw dates or strings
+    datasets: datasets.map((dataset) => ({
+      ...dataset,
+      backgroundColor: Array.isArray(dataset.backgroundColor)
+        ? dataset.backgroundColor
+        : [dataset.backgroundColor],
+    })),
+  };
+
+  const defaultOptions: ChartOptions<"bar"> = {
+    responsive: true,
+    plugins: {
+      title: {
+        display: true,
+        text: "Daily Vehicle Transactions by Classification and Axles",
+      },
+      legend: {
+        display: false,
+      },
+    },
+    scales: {
+      x: {
+        type: "time",
+        time: {
+          unit: "day",
+          tooltipFormat: "MM/dd/yyyy - h:mm a",
+          displayFormats: {
+            day: "MM/dd/yyyy",
+          },
+        },
+        adapters: {
+          date: {
+            locale: enUS, // Set the locale for date formatting
+          },
+        },
+        stacked: true,
+        title: {
+          display: true,
+          text: "Date",
+        },
+      },
+      y: {
+        stacked: true,
+        title: {
+          display: true,
+          text: "Total Axles",
+        },
+      },
+    },
+  };
+
+  return <Bar data={chartData} options={{ ...defaultOptions, ...options }} />;
+};
+
+export { BarChart, PieChart, LineChart, StackedBarChart };
