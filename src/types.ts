@@ -2,6 +2,8 @@ export enum Classification {
   Car = "car",
   Truck = "truck",
   Bike = "bike",
+  Van = "van",
+  Bus = "bus",
 }
 
 export interface VehicleData {

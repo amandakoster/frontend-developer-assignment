@@ -6,10 +6,24 @@ import { useAuth } from "@/context/AuthContext";
 import NavBar from "@/components/NavBar";
 import { fetchVehicleData } from "@/api/fetchVehicleData";
 import { VehicleData } from "@/types";
-import { BarChart, LineChart } from "@/components/charts/Charts";
+import {
+  StackedBarChart,
+  LineChart,
+  PieChart,
+} from "@/components/charts/Charts";
 import ChartLegend from "@/components/ChartLegend";
-import { reduceVehicleData, reduceTimestampData } from "@/utils/dataUtils";
-import { primaryBlue, mustardYellow, accentGreen } from "@/utils/colors";
+import {
+  processClassificationFrequency,
+  formatTimestamp,
+  processAxlesAndHeight,
+} from "@/utils/dataUtils";
+import {
+  accentGreen,
+  mustardYellow,
+  primaryBlue,
+  purple,
+  salmon,
+} from "@/utils/colors";
 
 const Dashboard: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -25,12 +39,8 @@ const Dashboard: React.FC = () => {
     } else {
       fetchVehicleData()
         .then((data) => {
-          // Add a unique ID to each record
-          const dataWithIds = data.map((vehicle, index) => ({
-            ...vehicle,
-            id: index + 1,
-          }));
-          setVehicleData(dataWithIds);
+          console.log("Raw API Data:", data); // Add this line
+          setVehicleData(data);
           setLoading(false);
         })
         .catch((error) => {
@@ -44,17 +54,6 @@ const Dashboard: React.FC = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
-  const classifications = [
-    { label: "car", color: primaryBlue },
-    { label: "truck", color: mustardYellow },
-    { label: "bike", color: accentGreen },
-  ];
-
-  const classificationCounts = reduceVehicleData(vehicleData, "classification");
-  const processedTimeData = reduceTimestampData(vehicleData);
-
-  const tableCellClass = "px-4 py-2 border text-sm";
-
   return (
     <div className="min-h-screen bg-gray-100">
       <NavBar />
@@ -66,67 +65,34 @@ const Dashboard: React.FC = () => {
           <table className="min-w-full bg-white border">
             <thead>
               <tr>
-                {/* TODO: DRY table */}
-                <th className={tableCellClass}>ID</th>
-                <th className={tableCellClass}>Timestamp</th>
-                <th className={tableCellClass}>Classification</th>
-                <th className={tableCellClass}>Axles</th>
-                <th className={tableCellClass}>Height</th>
+                <th className="px-4 py-2 border text-sm">ID</th>
+                <th className="px-4 py-2 border text-sm">Timestamp</th>
+                <th className="px-4 py-2 border text-sm">Classification</th>
+                <th className="px-4 py-2 border text-sm">Axles</th>
+                <th className="px-4 py-2 border text-sm">Height</th>
               </tr>
             </thead>
             <tbody>
-              {/* TODO: DRY table */}
               {vehicleData.map((vehicle, index) => (
                 <tr key={index}>
-                  <td className={tableCellClass}>{vehicle.id}</td>
-                  <td className={tableCellClass}>{vehicle.timestamp}</td>
-                  <td className={tableCellClass}>{vehicle.classification}</td>
-                  <td className={tableCellClass}>{vehicle.axles}</td>
-                  <td className={tableCellClass}>{vehicle.height}</td>
+                  <td className="px-4 py-2 border text-sm">{vehicle.id}</td>
+                  <td className="px-4 py-2 border text-sm">
+                    {formatTimestamp(vehicle.timestamp)}
+                  </td>
+                  <td className="px-4 py-2 border text-sm">
+                    {vehicle.classification}
+                  </td>
+                  <td className="px-4 py-2 border text-sm">{vehicle.axles}</td>
+                  <td className="px-4 py-2 border text-sm">{vehicle.height}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <ChartLegend classifications={classifications} />
-        <div className="grid grid-cols-1 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 gap-4 mt-8">
-          <div className="w-full h-64 mt-8">
-            <BarChart
-              labels={Object.keys(classificationCounts)}
-              data={Object.values(classificationCounts)}
-            />
-          </div>
-          {/* LineChart for Classification vs. Axles over Time */}
-          <div className="w-full h-64 mt-8">
-            <LineChart
-              labels={processedTimeData.labels}
-              datasets={processedTimeData.datasets}
-              options={{
-                responsive: true,
-                plugins: {
-                  title: {
-                    display: true,
-                    text: "Axles over Time by Classification",
-                  },
-                },
-                scales: {
-                  x: {
-                    title: {
-                      display: true,
-                      text: "Time",
-                    },
-                  },
-                  y: {
-                    title: {
-                      display: true,
-                      text: "Axles",
-                    },
-                  },
-                },
-              }}
-            />
-          </div>
-        </div>
+        <h1 className="text-center text-lg font-normal uppercase text-primary m-8">
+          Vehicle Classification Distribution
+        </h1>
+        <PieChart vehicleData={vehicleData} />
       </div>
     </div>
   );

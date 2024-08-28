@@ -6,12 +6,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#005ABB', // Primary Blue
-        secondary: '#004B8D', // Secondary Blue (might be replaced with mustard)
-        mustardYellow: '#FFC107', // Mustard Yellow for truck classification
-        lightGray: '#F5F5F5', // Light Gray
-        darkGray: '#333333', // Dark Gray
-        accentGreen: '#66BB6A', // Accent Green
+        primary: '#005ABB', // car
+        secondary: '#004B8D', 
+        mustardYellow: '#FFC107', // truck
+        lightGray: '#F5F5F5',
+        darkGray: '#333333',
+        accentGreen: '#66BB6A',// bike
+        purple: "#800080",// bus
+        salmon: "#e57070"
       },
     },
   },
