@@ -6,11 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import NavBar from "@/components/NavBar";
 import { fetchVehicleData } from "@/api/fetchVehicleData";
 import { VehicleData } from "@/types";
-import {
-  StackedBarChart,
-  LineChart,
-  PieChart,
-} from "@/components/charts/Charts";
+import { DoughnutChart } from "@/components/charts/Charts";
 import ChartLegend from "@/components/ChartLegend";
 import {
   processClassificationFrequency,
@@ -58,10 +54,16 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen bg-gray-100">
       <NavBar />
       <div className="p-4 m-4">
-        <h1 className="text-3xl font-light uppercase text-primary mb-4">
-          Vehicle Transactions
+        <h1 className="text-xl font-normal uppercase text-primary m-8">
+          Vehicle Classification Distribution
         </h1>
-        <div className="overflow-auto" style={{ maxHeight: "400px" }}>
+        <div className="flex justify-center items-center">
+          <DoughnutChart vehicleData={vehicleData} />
+        </div>
+        <div className="overflow-auto mt-4 " style={{ maxHeight: "400px" }}>
+          <h1 className="text-xl font-normal uppercase text-primary m-8">
+            Vehicle Transactions
+          </h1>
           <table className="min-w-full bg-white border">
             <thead>
               <tr>
@@ -89,10 +91,6 @@ const Dashboard: React.FC = () => {
             </tbody>
           </table>
         </div>
-        <h1 className="text-center text-lg font-normal uppercase text-primary m-8">
-          Vehicle Classification Distribution
-        </h1>
-        <PieChart vehicleData={vehicleData} />
       </div>
     </div>
   );
