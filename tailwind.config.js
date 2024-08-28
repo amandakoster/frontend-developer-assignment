@@ -13,7 +13,9 @@ module.exports = {
         darkGray: '#333333',
         accentGreen: '#66BB6A',// bike
         purple: "#800080",// bus
-        salmon: "#e57070"
+        salmon: "#e57070",
+        yellowGreen : "#A5C659",
+blueYellow : "#3A84A5",
       },
     },
   },

@@ -1,12 +1,6 @@
 import moment from "moment";
 import { VehicleData, Classification } from "@/types";
-import {
-  accentGreen,
-  mustardYellow,
-  primaryBlue,
-  purple,
-  salmon,
-} from "./colors";
+import { blueYellow, green, primaryBlue, yellow, yellowGreen } from "./colors";
 
 // Formats UTC timestamp to friendly label format using Moment.js
 export const formatTimestamp = (timestamp: string): string => {
@@ -52,7 +46,7 @@ export const processClassificationFrequency = (vehicleData: VehicleData[]) => {
               data.classification === Classification.Truck
           ).length
       ),
-      backgroundColor: mustardYellow,
+      backgroundColor: yellowGreen,
     },
     {
       label: "Bike Frequency",
@@ -64,7 +58,7 @@ export const processClassificationFrequency = (vehicleData: VehicleData[]) => {
               data.classification === Classification.Bike
           ).length
       ),
-      backgroundColor: accentGreen,
+      backgroundColor: green,
     },
     {
       label: "Van Frequency",
@@ -76,7 +70,7 @@ export const processClassificationFrequency = (vehicleData: VehicleData[]) => {
               data.classification === Classification.Van
           ).length
       ),
-      backgroundColor: "#800080", // Purple color for van
+      backgroundColor: yellow,
     },
     {
       label: "Bus Frequency",
@@ -88,7 +82,7 @@ export const processClassificationFrequency = (vehicleData: VehicleData[]) => {
               data.classification === Classification.Bus
           ).length
       ),
-      backgroundColor: "#FF6347", // Tomato color for bus
+      backgroundColor: blueYellow,
     },
   ];
 
@@ -116,8 +110,8 @@ export const processAxlesAndHeight = (vehicleData: VehicleData[]) => {
           .filter((data) => formatTimestamp(data.timestamp) === label)
           .reduce((acc, cur) => acc + cur.height, 0)
       ),
-      borderColor: accentGreen,
-      backgroundColor: accentGreen,
+      borderColor: green,
+      backgroundColor: green,
     },
   ];
 

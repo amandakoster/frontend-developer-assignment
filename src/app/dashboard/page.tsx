@@ -8,18 +8,7 @@ import { fetchVehicleData } from "@/api/fetchVehicleData";
 import { VehicleData } from "@/types";
 import { DoughnutChart } from "@/components/charts/Charts";
 import ChartLegend from "@/components/ChartLegend";
-import {
-  processClassificationFrequency,
-  formatTimestamp,
-  processAxlesAndHeight,
-} from "@/utils/dataUtils";
-import {
-  accentGreen,
-  mustardYellow,
-  primaryBlue,
-  purple,
-  salmon,
-} from "@/utils/colors";
+import { formatTimestamp } from "@/utils/dataUtils";
 
 const Dashboard: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -35,7 +24,7 @@ const Dashboard: React.FC = () => {
     } else {
       fetchVehicleData()
         .then((data) => {
-          console.log("Raw API Data:", data); // Add this line
+          console.log("Raw API Data:", data);
           setVehicleData(data);
           setLoading(false);
         })
@@ -67,7 +56,6 @@ const Dashboard: React.FC = () => {
           <table className="min-w-full bg-white border">
             <thead>
               <tr>
-                <th className="px-4 py-2 border text-sm">ID</th>
                 <th className="px-4 py-2 border text-sm">Timestamp</th>
                 <th className="px-4 py-2 border text-sm">Classification</th>
                 <th className="px-4 py-2 border text-sm">Axles</th>
@@ -75,9 +63,8 @@ const Dashboard: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {vehicleData.map((vehicle, index) => (
-                <tr key={index}>
-                  <td className="px-4 py-2 border text-sm">{vehicle.id}</td>
+              {vehicleData.map((vehicle, _) => (
+                <tr key={vehicle.id}>
                   <td className="px-4 py-2 border text-sm">
                     {formatTimestamp(vehicle.timestamp)}
                   </td>

@@ -16,11 +16,10 @@ import {
 import { VehicleData } from "@/types";
 import {
   primaryBlue,
-  mustardYellow,
-  accentGreen,
-  purple,
-  salmon,
-  darkGray,
+  green,
+  yellowGreen,
+  blueYellow,
+  yellow,
 } from "@/utils/colors";
 
 ChartJS.register(
@@ -66,14 +65,8 @@ export const DoughnutChart: React.FC<DoughnutChartProps> = ({
           classificationCounts.van,
           classificationCounts.bus,
         ],
-        backgroundColor: [
-          primaryBlue,
-          mustardYellow,
-          accentGreen,
-          purple,
-          salmon,
-        ],
-        borderColor: [primaryBlue, mustardYellow, accentGreen, purple, salmon],
+        backgroundColor: [primaryBlue, yellowGreen, green, yellow, blueYellow],
+        borderColor: [primaryBlue, yellowGreen, green, yellow, blueYellow],
         borderWidth: 1,
       },
     ],
