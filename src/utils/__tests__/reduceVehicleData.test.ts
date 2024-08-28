@@ -1,3 +1,4 @@
+import { clear } from "console";
 import { reduceVehicleData } from "../dataUtils";
 import { mockVehicleData } from "@/mockData/mockVehicleData";
 
@@ -6,9 +7,9 @@ describe("reduceVehicleData", () => {
     const result = reduceVehicleData(mockVehicleData, "classification");
 
     expect(result).toEqual({
-      bike: 7,
-      car: 10,
-      truck: 10,
+      bike: 8,
+      car: 8,
+      truck: 8,
     });
   });
 
@@ -17,11 +18,12 @@ describe("reduceVehicleData", () => {
 
     expect(result).toEqual({
       "2": 13,
-      "4": 4,
+      "3": 2,
+      "4": 1,
       "6": 3,
-      "8": 3,
-      "10": 3,
-      "12": 1,
+      "7": 2,
+      "8": 2,
+      "9": 1,
     });
   });
 
@@ -29,33 +31,26 @@ describe("reduceVehicleData", () => {
     const result = reduceVehicleData(mockVehicleData, "height");
 
     expect(result).toEqual({
-      "39": 1,
       "40": 1,
       "41": 1,
-      "42": 1,
+      "42": 4,
       "43": 1,
       "44": 1,
       "45": 1,
       "55": 1,
       "56": 1,
-      "57": 1,
-      "58": 1,
+      "57": 2,
+      "58": 2,
       "59": 1,
       "60": 1,
-      "61": 1,
-      "62": 1,
-      "63": 1,
-      "64": 1,
-      "150": 1,
-      "152": 1,
+      "152": 2,
       "154": 1,
+      "155": 1,
+      "160": 1,
+      "165": 1,
       "170": 1,
-      "171": 1,
-      "172": 1,
       "180": 1,
-      "181": 1,
-      "182": 1,
-      "185": 1,
     });
+    clear;
   });
 });

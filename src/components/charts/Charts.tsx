@@ -114,5 +114,9 @@ export const DoughnutChart: React.FC<DoughnutChartProps> = ({
     },
   };
 
-  return <Doughnut data={data} options={options} />;
+  return (
+    <div>
+      <Doughnut data={data} options={options} />
+    </div>
+  );
 };

@@ -39,7 +39,7 @@ const AuthForm: React.FC = () => {
     "text-sm w-full p-4 hover:bg-neutral-200 placeholder-gray-300 focus:outline-none transition duration-300";
 
   return (
-    <>
+    <div>
       <Image
         src="/images/auth.png"
         alt="Branding"
@@ -92,7 +92,7 @@ const AuthForm: React.FC = () => {
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

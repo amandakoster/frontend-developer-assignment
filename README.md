@@ -46,6 +46,7 @@ Create a .env file in the root directory and add any necessary environment varia
 `` `NEXT_PUBLIC_LOGIN_ENDPOINT=/api/login ```
 
 ## Usage
+
 ### Running the Application Locally
 
 To start the development server, run

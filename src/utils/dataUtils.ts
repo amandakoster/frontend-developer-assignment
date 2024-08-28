@@ -2,6 +2,17 @@ import moment from "moment";
 import { VehicleData, Classification } from "@/types";
 import { blueYellow, green, primaryBlue, yellow, yellowGreen } from "./colors";
 
+export function reduceVehicleData<T extends keyof VehicleData>(
+  data: VehicleData[],
+  property: T
+): Record<string, number> {
+  return data.reduce((acc, item) => {
+    const key = String(item[property]);
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+}
+
 // Formats UTC timestamp to friendly label format using Moment.js
 export const formatTimestamp = (timestamp: string): string => {
   const parsedMoment = moment.utc(timestamp);
@@ -13,7 +24,7 @@ export const formatTimestamp = (timestamp: string): string => {
 };
 
 // Returns an array of unique dates from the vehicle data.
-const getUniqueDates = (vehicleData: VehicleData[]): string[] => {
+export const getUniqueDates = (vehicleData: VehicleData[]): string[] => {
   return vehicleData
     .map((data) => formatTimestamp(data.timestamp))
     .filter((value, index, array) => array.indexOf(value) === index);

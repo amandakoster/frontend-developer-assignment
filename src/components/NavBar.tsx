@@ -34,7 +34,7 @@ const NavBar: React.FC = () => {
   };
 
   return (
-    <>
+    <div>
       <nav className="flex justify-between items-center mb-8 p-4 bg-primary text-white">
         <h1 className="text-lightGray text-3xl font-medium uppercase m-4">
           {pageName}
@@ -51,7 +51,7 @@ const NavBar: React.FC = () => {
         onConfirm={confirmLogout}
         onCancel={cancelLogout}
       />
-    </>
+    </div>
   );
 };
 
