@@ -35,8 +35,8 @@ const NavBar: React.FC = () => {
 
   return (
     <div>
-      <nav className="flex justify-between items-center mb-8 p-4 bg-primary text-white">
-        <h1 className="text-lightGray text-3xl font-medium uppercase m-4">
+      <nav className="flex justify-between items-center mb-8 p-4 bg-primaryBlue text-white">
+        <h1 className="text-lightGray text-3xl font-thin uppercase m-4">
           {pageName}
         </h1>
         <button

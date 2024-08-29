@@ -22,7 +22,7 @@ const legendClassifications = [
   {
     label: "Car",
     legendColor: primaryBlue,
-    rowColor: "bg-primary bg-opacity-10",
+    rowColor: "bg-primaryBlue bg-opacity-10",
   },
   {
     label: "Truck",
@@ -87,16 +87,16 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen bg-gray-100">
       <NavBar />
       <div className="p-4 m-4">
-        <div className="mb-8 p-4 border border-yellow-200 rounded-md">
+        <div className="mb-8 p-2 border-b border-dotted border-primaryBlue">
           <div className="flex flex-col md:flex-row justify-center items-center space-x-4">
             <div className="flex flex-col justify-center items-center">
-              <h1 className="text-xl font-normal uppercase text-primary m-8">
+              <h1 className="text-xl font-normal uppercase text-primaryBlue m-8">
                 Vehicle Classification Distribution
               </h1>
               <DoughnutChart vehicleData={vehicleData} />
             </div>
             <div className="flex flex-col justify-center items-center">
-              <h1 className="text-xl font-normal uppercase text-primary m-8">
+              <h1 className="text-xl font-normal uppercase text-primaryBlue m-8">
                 Vehicle Axles and Height Distribution
               </h1>
               <ScatterChart vehicleData={vehicleData} />
@@ -110,7 +110,7 @@ const Dashboard: React.FC = () => {
             }))}
           />
         </div>
-        <h1 className="text-xl font-normal uppercase text-primary m-8">
+        <h1 className="text-xl font-normal uppercase text-primaryBlue m-8">
           Vehicle Transactions
         </h1>
         <div className="overflow-auto mt-4 max-h-[400px]">

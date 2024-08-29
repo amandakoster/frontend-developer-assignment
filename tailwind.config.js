@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#005ABB', // car
+        primaryBlue: '#005ABB', // car
         secondary: '#004B8D', 
         mustardYellow: '#FFC107', // truck
         lightGray: '#F5F5F5',
