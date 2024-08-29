@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import moment from "moment";
+
 import { useAuth } from "@/context/AuthContext";
 import NavBar from "@/components/NavBar";
 import { fetchVehicleData } from "@/api/fetchVehicleData";
@@ -83,19 +85,27 @@ const Dashboard: React.FC = () => {
     return item ? item.rowColor : "";
   };
 
+  const transactionDate =
+    vehicleData.length > 0
+      ? moment(vehicleData[0].timestamp).format("MM/DD/YY")
+      : "No Data";
+
+  const divClass = "flex flex-col justify-center items-center";
+  const tableDataClass = "px-4 py-2 border text-sm";
+
   return (
     <div className="min-h-screen bg-gray-100">
       <NavBar />
       <div className="p-4 m-4">
-        <div className="mb-8 p-2 border-b border-dotted border-primaryBlue">
+        <div className="mb-8 p-2">
           <div className="flex flex-col md:flex-row justify-center items-center space-x-4">
-            <div className="flex flex-col justify-center items-center">
+            <div className={divClass}>
               <h1 className="text-xl font-normal uppercase text-primaryBlue m-8">
                 Vehicle Classification Distribution
               </h1>
               <DoughnutChart vehicleData={vehicleData} />
             </div>
-            <div className="flex flex-col justify-center items-center">
+            <div className={divClass}>
               <h1 className="text-xl font-normal uppercase text-primaryBlue m-8">
                 Vehicle Axles and Height Distribution
               </h1>
@@ -109,13 +119,20 @@ const Dashboard: React.FC = () => {
               color: item.legendColor,
             }))}
           />
+          <hr className="border-t border-dotted border-primaryBlue mt-16" />
         </div>
-        <h1 className="text-xl font-normal uppercase text-primaryBlue m-8">
-          Vehicle Transactions
+        <h1 className="text-xl font-extralight uppercase text-primaryBlue m-4">
+          Vehicle Transactions:
+          <span className="font-bold mr-2">&emsp;{transactionDate}</span>
+          <span className="mx-2">|</span>
+          <span className="font-extralight italic">
+            Total Vehicles: {vehicleData.length}
+          </span>
         </h1>
+
         <div className="overflow-auto mt-4 max-h-[400px]">
-          <table className="min-w-full bg-white border">
-            <thead className="bg-gray-200 sticky top-0 z-10">
+          <table className="min-w-full bg-white border table-auto">
+            <thead className="bg-gray-200 sticky top-0 z-20">
               <tr>
                 {headers.map((header, index) => (
                   <th key={index} className="px-4 py-2 border text-sm">
@@ -124,17 +141,19 @@ const Dashboard: React.FC = () => {
                 ))}
               </tr>
             </thead>
+
             <tbody>
               {vehicleData.map((vehicle, index) => (
-                <tr key={index} className={getRowClass(vehicle.classification)}>
-                  <td className="px-4 py-2 border text-sm">
+                <tr
+                  key={index}
+                  className={`${getRowClass(vehicle.classification)} h-12`}
+                >
+                  <td className={tableDataClass}>
                     {formatTimestamp(vehicle.timestamp)}
                   </td>
-                  <td className="px-4 py-2 border text-sm">
-                    {vehicle.classification}
-                  </td>
-                  <td className="px-4 py-2 border text-sm">{vehicle.axles}</td>
-                  <td className="px-4 py-2 border text-sm">{vehicle.height}</td>
+                  <td className={tableDataClass}>{vehicle.classification}</td>
+                  <td className={tableDataClass}>{vehicle.axles}</td>
+                  <td className={tableDataClass}>{vehicle.height}</td>
                 </tr>
               ))}
             </tbody>

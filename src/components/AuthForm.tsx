@@ -85,7 +85,7 @@ const AuthForm: React.FC = () => {
             </div>
             <button
               type="submit"
-              className="text-sm w-full p-4 bg-primary text-white rounded-md hover:bg-secondary transition duration-300"
+              className="text-sm w-full p-4 bg-primaryBlue text-white  hover:bg-secondary transition duration-300"
             >
               {isAuthenticated ? "Logout" : "Login"}
             </button>

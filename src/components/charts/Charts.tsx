@@ -51,6 +51,8 @@ export const DoughnutChart: React.FC<DoughnutChartProps> = ({
     { car: 0, truck: 0, bike: 0, van: 0, bus: 0 }
   );
 
+  const totalVehicles = vehicleData.length;
+
   const data = {
     labels: ["Car", "Truck", "Bike", "Van", "Bus"],
     datasets: [
@@ -71,17 +73,17 @@ export const DoughnutChart: React.FC<DoughnutChartProps> = ({
 
   const options = {
     responsive: true,
-    maintainAspectRatio: false, // Prevents chart from auto-resizing
+    maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false, // Hides the legend
+        display: false,
       },
       tooltip: {
         callbacks: {
-          label: function (context: any) {
-            const label = context.label || "";
-            const value = context.parsed;
-            return `${label}: ${value}`;
+          label: function (tooltipItem: TooltipItem<"doughnut">) {
+            const count = tooltipItem.raw as number;
+            const percentage = ((count / totalVehicles) * 100).toFixed(0);
+            return `${tooltipItem.label}: ${count} (${percentage}%)`;
           },
         },
       },
