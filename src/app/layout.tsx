@@ -20,7 +20,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={montserrat.className}>
-        {/* Apply Montserrat - Sinelec font */}
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

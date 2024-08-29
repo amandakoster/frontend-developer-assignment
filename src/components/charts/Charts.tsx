@@ -1,7 +1,5 @@
 import React from "react";
-import { Doughnut } from "react-chartjs-2";
-import { ChartOptions } from "chart.js";
-import moment from "moment";
+import { Doughnut, Scatter } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -11,8 +9,9 @@ import {
   Title,
   Tooltip,
   Legend,
+  ScatterController,
+  PointElement,
 } from "chart.js";
-
 import { VehicleData } from "@/types";
 import {
   primaryBlue,
@@ -29,8 +28,12 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ScatterController,
+  PointElement
 );
+
+export const colorArray = [primaryBlue, yellowGreen, green, yellow, blueYellow];
 
 interface DoughnutChartProps {
   vehicleData: VehicleData[];
@@ -44,15 +47,8 @@ export const DoughnutChart: React.FC<DoughnutChartProps> = ({
       acc[vehicle.classification] = (acc[vehicle.classification] || 0) + 1;
       return acc;
     },
-    {
-      car: 0,
-      truck: 0,
-      bike: 0,
-      van: 0,
-      bus: 0,
-    }
+    { car: 0, truck: 0, bike: 0, van: 0, bus: 0 }
   );
-  const total = vehicleData.length;
 
   const data = {
     labels: ["Car", "Truck", "Bike", "Van", "Bus"],
@@ -65,49 +61,26 @@ export const DoughnutChart: React.FC<DoughnutChartProps> = ({
           classificationCounts.van,
           classificationCounts.bus,
         ],
-        backgroundColor: [primaryBlue, yellowGreen, green, yellow, blueYellow],
-        borderColor: [primaryBlue, yellowGreen, green, yellow, blueYellow],
+        backgroundColor: colorArray,
+        borderColor: colorArray,
         borderWidth: 1,
       },
     ],
   };
 
-  const options: ChartOptions<"doughnut"> = {
+  const options = {
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: false, // Prevents chart from auto-resizing
     plugins: {
       legend: {
-        position: "top",
-        labels: {
-          generateLabels: function (chart: any) {
-            const data = chart.data;
-            return data.labels!.map((label: any, i: number) => ({
-              text: `${label}: ${data.datasets[0].data[i]}`,
-              fillStyle: data.datasets[0].backgroundColor[i],
-              strokeStyle: data.datasets[0].borderColor[i],
-              lineWidth: 2,
-            }));
-          },
-        },
+        display: false, // Hides the legend
       },
       tooltip: {
         callbacks: {
-          title: function () {
-            return "";
-          },
           label: function (context: any) {
             const label = context.label || "";
-            const value = context.raw !== undefined ? context.raw : 0;
-            const friendlyDate = moment(
-              vehicleData[context.dataIndex].timestamp
-            ).format("MM/DD/YYYY - h:mm A");
-            const percentage = ((value / total) * 100).toFixed(1);
-
-            return [
-              `${label}: ${value}`,
-              `(${percentage}%)`,
-              `Date: ${friendlyDate}`,
-            ];
+            const value = context.parsed;
+            return `${label}: ${value}`;
           },
         },
       },
@@ -115,8 +88,75 @@ export const DoughnutChart: React.FC<DoughnutChartProps> = ({
   };
 
   return (
-    <div>
+    <div style={{ width: "400px", height: "400px" }}>
+      {" "}
+      {/* Adjust size here */}
       <Doughnut data={data} options={options} />
+    </div>
+  );
+};
+
+interface ScatterChartProps {
+  vehicleData: VehicleData[];
+}
+
+export const ScatterChart: React.FC<ScatterChartProps> = ({ vehicleData }) => {
+  const data = {
+    datasets: vehicleData.map((vehicle) => ({
+      label: vehicle.classification,
+      data: [{ x: vehicle.axles, y: vehicle.height }],
+      backgroundColor:
+        vehicle.classification === "car"
+          ? primaryBlue
+          : vehicle.classification === "truck"
+          ? yellowGreen
+          : vehicle.classification === "bike"
+          ? green
+          : vehicle.classification === "van"
+          ? yellow
+          : blueYellow, // Assign colors based on classification
+    })),
+  };
+
+  const options = {
+    scales: {
+      x: {
+        type: "linear" as const,
+        position: "bottom" as const,
+        title: {
+          display: true,
+          text: "Axles",
+        },
+      },
+      y: {
+        type: "linear" as const,
+        title: {
+          display: true,
+          text: "Height (inches)",
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        display: false, // We won't need a legend since the colors are obvious
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context: any) {
+            const point = context.raw;
+            return `${point.classification}: ${point.x} axles, ${point.y} inches`;
+          },
+        },
+      },
+    },
+    maintainAspectRatio: false,
+  };
+
+  return (
+    <div style={{ width: "400px", height: "400px" }}>
+      {" "}
+      {/* Adjust size here */}
+      <Scatter data={data} options={options} />
     </div>
   );
 };

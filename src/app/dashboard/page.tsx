@@ -6,8 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import NavBar from "@/components/NavBar";
 import { fetchVehicleData } from "@/api/fetchVehicleData";
 import { VehicleData } from "@/types";
-import { DoughnutChart } from "@/components/charts/Charts";
-import ChartLegend from "@/components/ChartLegend";
+import { DoughnutChart, ScatterChart } from "@/components/charts/Charts";
 import { formatTimestamp } from "@/utils/dataUtils";
 
 const Dashboard: React.FC = () => {
@@ -24,7 +23,6 @@ const Dashboard: React.FC = () => {
     } else {
       fetchVehicleData()
         .then((data) => {
-          console.log("Raw API Data:", data);
           setVehicleData(data);
           setLoading(false);
         })
@@ -43,13 +41,25 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen bg-gray-100">
       <NavBar />
       <div className="p-4 m-4">
-        <h1 className="text-xl font-normal uppercase text-primary m-8">
-          Vehicle Classification Distribution
-        </h1>
-        <div className="flex justify-center items-center">
-          <DoughnutChart vehicleData={vehicleData} />
+        <div className="flex flex-col md:flex-row justify-center items-center space-x-4">
+          <div className="flex flex-col justify-center items-center">
+            <h1 className="text-xl font-normal uppercase text-primary m-8">
+              Vehicle Classification Distribution
+            </h1>
+            <div style={{ width: "400px", height: "400px" }}>
+              <DoughnutChart vehicleData={vehicleData} />
+            </div>
+          </div>
+          <div className="flex flex-col justify-center items-center">
+            <h1 className="text-xl font-normal uppercase text-primary m-8">
+              Vehicle Axles and Height Distribution
+            </h1>
+            <div style={{ width: "400px", height: "400px" }}>
+              <ScatterChart vehicleData={vehicleData} />
+            </div>
+          </div>
         </div>
-        <div className="overflow-auto mt-4 " style={{ maxHeight: "400px" }}>
+        <div className="overflow-auto mt-4" style={{ maxHeight: "400px" }}>
           <h1 className="text-xl font-normal uppercase text-primary m-8">
             Vehicle Transactions
           </h1>
@@ -63,8 +73,8 @@ const Dashboard: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {vehicleData.map((vehicle, _) => (
-                <tr key={vehicle.id}>
+              {vehicleData.map((vehicle, index) => (
+                <tr key={index}>
                   <td className="px-4 py-2 border text-sm">
                     {formatTimestamp(vehicle.timestamp)}
                   </td>
