@@ -2,11 +2,15 @@ import React from "react";
 
 interface ChartLegendProps {
   classifications: { label: string; color: string }[];
+  className?: string;
 }
 
-const ChartLegend: React.FC<ChartLegendProps> = ({ classifications }) => {
+const ChartLegend: React.FC<ChartLegendProps> = ({
+  classifications,
+  className = "",
+}) => {
   return (
-    <div className="flex justify-center mt-4">
+    <div className={`${className} flex justify-center mt-4`}>
       {classifications.map((classification, index) => (
         <div key={index} className="flex items-center mr-4">
           <div

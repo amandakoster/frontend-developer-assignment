@@ -1,11 +1,11 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google"; // Import Montserrat
+import { Montserrat } from "next/font/google";
 
 import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 
-const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"] }); // Use Montserrat with specific weights
+const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"] });
 
 export const metadata: Metadata = {
   title: "frontend-developer-assignment",

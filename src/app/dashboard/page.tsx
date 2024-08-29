@@ -7,7 +7,15 @@ import NavBar from "@/components/NavBar";
 import { fetchVehicleData } from "@/api/fetchVehicleData";
 import { VehicleData } from "@/types";
 import { DoughnutChart, ScatterChart } from "@/components/charts/Charts";
+import ChartLegend from "@/components/ChartLegend";
 import { formatTimestamp } from "@/utils/dataUtils";
+import {
+  primaryBlue,
+  yellowGreen,
+  green,
+  yellow,
+  blueYellow,
+} from "@/utils/colors";
 
 const Dashboard: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -16,6 +24,14 @@ const Dashboard: React.FC = () => {
   const [vehicleData, setVehicleData] = useState<VehicleData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  const legendClassifications = [
+    { label: "Car", color: primaryBlue },
+    { label: "Truck", color: yellowGreen },
+    { label: "Bike", color: green },
+    { label: "Van", color: yellow },
+    { label: "Bus", color: blueYellow },
+  ];
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -41,28 +57,30 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen bg-gray-100">
       <NavBar />
       <div className="p-4 m-4">
-        <div className="flex flex-col md:flex-row justify-center items-center space-x-4">
-          <div className="flex flex-col justify-center items-center">
-            <h1 className="text-xl font-normal uppercase text-primary m-8">
-              Vehicle Classification Distribution
-            </h1>
-            <div style={{ width: "400px", height: "400px" }}>
+        <div className="mb-8 p-4 border border-yellow-200 rounded-md">
+          <div className="flex flex-col md:flex-row justify-center items-center space-x-4">
+            <div className="flex flex-col justify-center items-center">
+              <h1 className="text-xl font-normal uppercase text-primary m-8">
+                Vehicle Classification Distribution
+              </h1>
               <DoughnutChart vehicleData={vehicleData} />
             </div>
-          </div>
-          <div className="flex flex-col justify-center items-center">
-            <h1 className="text-xl font-normal uppercase text-primary m-8">
-              Vehicle Axles and Height Distribution
-            </h1>
-            <div style={{ width: "400px", height: "400px" }}>
+            <div className="flex flex-col justify-center items-center">
+              <h1 className="text-xl font-normal uppercase text-primary m-8">
+                Vehicle Axles and Height Distribution
+              </h1>
               <ScatterChart vehicleData={vehicleData} />
             </div>
           </div>
+          <ChartLegend
+            className="mt-8"
+            classifications={legendClassifications}
+          />
         </div>
-        <div className="overflow-auto mt-4" style={{ maxHeight: "400px" }}>
-          <h1 className="text-xl font-normal uppercase text-primary m-8">
-            Vehicle Transactions
-          </h1>
+        <h1 className="text-xl font-normal uppercase text-primary m-8">
+          Vehicle Transactions
+        </h1>
+        <div className="overflow-auto mt-4 max-h-[400px]">
           <table className="min-w-full bg-white border">
             <thead>
               <tr>

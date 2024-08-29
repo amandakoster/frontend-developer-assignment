@@ -11,6 +11,7 @@ import {
   Legend,
   ScatterController,
   PointElement,
+  TooltipItem,
 } from "chart.js";
 import { VehicleData } from "@/types";
 import {
@@ -88,9 +89,7 @@ export const DoughnutChart: React.FC<DoughnutChartProps> = ({
   };
 
   return (
-    <div style={{ width: "400px", height: "400px" }}>
-      {" "}
-      {/* Adjust size here */}
+    <div className="w-[400px] h-[400px]">
       <Doughnut data={data} options={options} />
     </div>
   );
@@ -114,7 +113,7 @@ export const ScatterChart: React.FC<ScatterChartProps> = ({ vehicleData }) => {
           ? green
           : vehicle.classification === "van"
           ? yellow
-          : blueYellow, // Assign colors based on classification
+          : blueYellow,
     })),
   };
 
@@ -138,13 +137,15 @@ export const ScatterChart: React.FC<ScatterChartProps> = ({ vehicleData }) => {
     },
     plugins: {
       legend: {
-        display: false, // We won't need a legend since the colors are obvious
+        display: false,
       },
       tooltip: {
         callbacks: {
-          label: function (context: any) {
-            const point = context.raw;
-            return `${point.classification}: ${point.x} axles, ${point.y} inches`;
+          label: function (context: TooltipItem<"scatter">) {
+            const classification = context.dataset.label;
+            const xValue = (context.raw as { x: number }).x;
+            const yValue = (context.raw as { y: number }).y;
+            return `${classification}: ${xValue} axles, ${yValue} inches`;
           },
         },
       },
@@ -153,9 +154,7 @@ export const ScatterChart: React.FC<ScatterChartProps> = ({ vehicleData }) => {
   };
 
   return (
-    <div style={{ width: "400px", height: "400px" }}>
-      {" "}
-      {/* Adjust size here */}
+    <div className="w-[400px] h-[400px]">
       <Scatter data={data} options={options} />
     </div>
   );
