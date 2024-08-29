@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html className="bg-lightGray" lang="en">
       <body className={montserrat.className}>
         <AuthProvider>{children}</AuthProvider>
       </body>

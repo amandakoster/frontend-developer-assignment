@@ -15,9 +15,11 @@ module.exports = {
         purple: "#800080",// bus
         salmon: "#e57070",
         yellowGreen : "#A5C659",
-blueYellow : "#3A84A5",
+        blueYellow : "#3A84A5",
       },
     },
   },
-  plugins: [],
-}
+ plugins: [
+    require('@ellreka/tailwindcss-nth-child')(['even', 'odd']),
+  ],
+};
