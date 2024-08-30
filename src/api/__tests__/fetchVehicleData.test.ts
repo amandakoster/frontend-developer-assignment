@@ -1,24 +1,42 @@
-import { fetchVehicleData } from "@/api/fetchVehicleData";
-import { mockVehicleData } from "@/mockData/mockVehicleData";
+import { fetchVehicleData } from "../fetchVehicleData";
+import { VehicleData, Classification } from "@/types";
 
-jest.mock("../fetchVehicleData", () => ({
-  fetchVehicleData: jest.fn(),
-}));
+const mockApiUrl = "http://mockapi.com/data";
 
 describe("fetchVehicleData", () => {
-  beforeEach(() => {
-    (fetchVehicleData as jest.Mock).mockResolvedValue(mockVehicleData);
-  });
+  it("should fetch vehicle data successfully", async () => {
+    const mockData: VehicleData[] = [
+      {
+        id: 1,
+        classification: "Car" as Classification,
+        timestamp: "2024-08-30T12:34:56Z",
+        axles: 2,
+        height: 1.5,
+      },
+    ];
 
-  test("should fetch vehicle data successfully", async () => {
-    const data = await fetchVehicleData();
-    expect(data).toEqual(mockVehicleData);
-  });
-
-  test("should handle errors correctly", async () => {
-    (fetchVehicleData as jest.Mock).mockRejectedValue(
-      new Error("Failed to fetch")
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(mockData),
+      } as Response)
     );
-    await expect(fetchVehicleData()).rejects.toThrow("Failed to fetch");
+
+    const data = await fetchVehicleData();
+
+    expect(data).toEqual(mockData);
+    expect(global.fetch).toHaveBeenCalledWith(mockApiUrl);
+  });
+
+  it("should throw an error if the response is not ok", async () => {
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: false,
+        statusText: "Internal Server Error",
+      } as Response)
+    );
+
+    await expect(fetchVehicleData()).rejects.toThrow("Failed to fetch data");
+    expect(global.fetch).toHaveBeenCalledWith(mockApiUrl);
   });
 });

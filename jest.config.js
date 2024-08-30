@@ -6,6 +6,7 @@ module.exports = {
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
+  setupFiles: ['<rootDir>/jest.setup.ts'],
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   collectCoverage: true,
@@ -23,5 +24,5 @@ module.exports = {
     '!src/**/*.d.ts',
   ],
   coverageReporters: ['text', 'lcov'],
-    setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
-}
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
+};

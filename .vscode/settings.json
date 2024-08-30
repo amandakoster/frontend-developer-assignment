@@ -4,7 +4,8 @@
     "extralight",
     "fontawesome",
     "fortawesome",
-    "Sinelec"
+    "Sinelec",
+    "testuser"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true

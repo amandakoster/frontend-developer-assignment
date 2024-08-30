@@ -58,7 +58,7 @@ const AuthForm: React.FC = () => {
           <h2 className="font-light text-lg uppercase text-gray-600 mb-4">
             Welcome to Sinelec USA
           </h2>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} role="form">
             <div className="relative mb-4">
               <input
                 type="text"
@@ -80,6 +80,7 @@ const AuthForm: React.FC = () => {
                 type="button"
                 onClick={togglePasswordVisibility}
                 className="text-xs absolute right-4 top-5 text-primary"
+                data-testid="toggle-password-visibility"
               >
                 <FontAwesomeIcon
                   icon={showPassword ? faEyeSlash : faEye}
