@@ -1,4 +1,5 @@
 import moment from "moment";
+
 import { VehicleData, Classification } from "@/types";
 import { blueYellow, green, primaryBlue, yellow, yellowGreen } from "./colors";
 
@@ -13,13 +14,13 @@ export function reduceVehicleData<T extends keyof VehicleData>(
   }, {} as Record<string, number>);
 }
 
-// Formats UTC timestamp to friendly label format using Moment.js
 export const formatTimestamp = (timestamp: string): string => {
-  const parsedMoment = moment.utc(timestamp);
+  const parsedMoment = moment(timestamp, moment.ISO_8601, true);
   if (!parsedMoment.isValid()) {
     console.error(`Invalid Date encountered: ${timestamp}`);
     return "Invalid Date";
   }
+
   return parsedMoment.local().format("MM/DD/YY");
 };
 

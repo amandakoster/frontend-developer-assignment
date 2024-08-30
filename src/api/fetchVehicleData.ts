@@ -1,58 +1,25 @@
 import { VehicleData } from "@/types";
-import { mockVehicleData } from "@/mockData/mockVehicleData";
 
-// getMockData
-// const API_URL =
-// process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/getData";
-
-// // Determine if the environment is development or testing
-// const isDevelopment =
-//   process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test";
-
-// export const fetchVehicleData = async (): Promise<VehicleData[]> => {
-//   if (isDevelopment) {
-//     console.log("Using mock data");
-//     return new Promise((resolve) => {
-//       setTimeout(() => {
-//         resolve(mockVehicleData);
-//       }, 500); // simulate network delay
-//     });
-//   }
-
-//   return fetch(API_URL)
-//     .then((response) => {
-//       if (!response.ok) {
-//         throw new Error("Failed to fetch data");
-//       }
-//       return response.json();
-//     })
-//     .then((data: VehicleData[]) => {
-//       console.log("Data fetched successfully:", data);
-//       return data;
-//     })
-//     .catch((error) => {
-//       console.error("Error fetching data:", error);
-//       throw error;
-//     });
-// };
-
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://44.222.172.90:8080/getData";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const fetchVehicleData = async (): Promise<VehicleData[]> => {
-  return fetch(API_URL)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      return response.json();
-    })
-    .then((data: VehicleData[]) => {
-      console.log("Data fetched successfully:", data);
-      return data;
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-      throw error;
-    });
+  if (!API_URL) {
+    throw new Error("API_URL is not defined");
+  }
+
+  try {
+    const response = await fetch(API_URL);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    const data: VehicleData[] = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+
+    throw error;
+  }
 };

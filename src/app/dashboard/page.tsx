@@ -2,96 +2,166 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { useAuth } from "@/context/AuthContext";
+import moment from "moment";
 
-const AuthForm: React.FC = () => {
-  const { isAuthenticated, login, logout } = useAuth();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+import { useAuth } from "@/context/AuthContext";
+import NavBar from "@/components/NavBar";
+import { fetchVehicleData } from "@/api/fetchVehicleData";
+import { VehicleData } from "@/types";
+import { DoughnutChart, ScatterChart } from "@/components/charts/Charts";
+import ChartLegend from "@/components/ChartLegend";
+import { formatTimestamp } from "@/utils/dataUtils";
+
+import {
+  primaryBlue,
+  yellowGreen,
+  green,
+  mustardYellow,
+  blueYellow,
+} from "@/utils/colors";
+
+const legendClassifications = [
+  {
+    label: "Car",
+    legendColor: primaryBlue,
+    rowColor: "bg-primaryBlue bg-opacity-10",
+  },
+  {
+    label: "Truck",
+    legendColor: yellowGreen,
+    rowColor: "bg-yellowGreen bg-opacity-10",
+  },
+  {
+    label: "Bike",
+    legendColor: green,
+    rowColor: "bg-accentGreen bg-opacity-10",
+  },
+  {
+    label: "Van",
+    legendColor: mustardYellow,
+    rowColor: "bg-mustardYellow bg-opacity-10",
+  },
+  {
+    label: "Bus",
+    legendColor: blueYellow,
+    rowColor: "bg-blueYellow bg-opacity-10",
+  },
+];
+
+const Dashboard: React.FC = () => {
+  const { isAuthenticated } = useAuth();
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (isAuthenticated) {
-      logout();
-      router.push("./");
-    } else {
-      login(username, password);
-    }
-  };
+  const [vehicleData, setVehicleData] = useState<VehicleData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      router.push("./dashboard");
+    if (!isAuthenticated) {
+      router.push("./");
+    } else {
+      fetchVehicleData()
+        .then((data) => {
+          setVehicleData(data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          setError("Failed to load vehicle data");
+          setLoading(false);
+        });
     }
   }, [isAuthenticated, router]);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevState) => !prevState);
+  if (!isAuthenticated) return null;
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
+  const headers = ["Timestamp", "Classification", "Axles", "Height"];
+
+  const getRowClass = (classification: string) => {
+    const item = legendClassifications.find(
+      (item) => item.label.toLowerCase() === classification.toLowerCase()
+    );
+    return item ? item.rowColor : "";
   };
 
-  const inputClass =
-    "text-sm w-full p-4 hover:bg-neutral-200 placeholder-gray-300 focus:outline-none transition duration-300";
+  const transactionDate =
+    vehicleData.length > 0
+      ? moment(vehicleData[0].timestamp).format("MM/DD/YY")
+      : "No Data";
+
+  const divClass = "flex flex-col justify-center items-center";
+  const tableDataClass = "px-4 py-2 border text-sm";
 
   return (
-    <div className="relative min-h-screen">
-      <Image
-        src="/images/auth.png"
-        alt="Branding image of a highway with a city in background"
-        fill
-        style={{ objectFit: "cover" }}
-        className="absolute inset-0 z-0 opacity-50"
-        priority
-      />
-      <div className="relative flex items-center justify-center min-h-full">
-        <div className="relative z-10 bg-lightGray p-10 shadow-lg transform scale-125">
-          <h2 className="font-light text-lg uppercase text-gray-600 mb-4">
-            Welcome to Sinelec USA
-          </h2>
-          <form onSubmit={handleSubmit}>
-            <div className="relative mb-4">
-              <input
-                type="text"
-                placeholder="Enter username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className={inputClass}
-              />
+    <div className="min-h-screen bg-gray-100">
+      <NavBar />
+      <div className="p-4 m-4">
+        <div className="mb-8 p-2">
+          <div className="flex flex-col md:flex-row justify-center items-center space-x-4">
+            <div className={divClass}>
+              <h1 className="text-xl font-normal uppercase text-primaryBlue m-8">
+                Vehicle Classification Distribution
+              </h1>
+              <DoughnutChart vehicleData={vehicleData} />
             </div>
-            <div className="relative mb-4">
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={inputClass}
-              />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="text-xs absolute right-4 top-5 text-primary"
-              >
-                <FontAwesomeIcon
-                  icon={showPassword ? faEyeSlash : faEye}
-                  size="lg"
-                />
-              </button>
+            <div className={divClass}>
+              <h1 className="text-xl font-normal uppercase text-primaryBlue m-8">
+                Vehicle Axles and Height Distribution
+              </h1>
+              <ScatterChart vehicleData={vehicleData} />
             </div>
-            <button
-              type="submit"
-              className="text-sm w-full p-4 bg-primaryBlue text-white  hover:bg-secondary transition duration-300"
-            >
-              {isAuthenticated ? "Logout" : "Login"}
-            </button>
-          </form>
+          </div>
+          <ChartLegend
+            className="mt-8"
+            classifications={legendClassifications.map((item) => ({
+              label: item.label,
+              color: item.legendColor,
+            }))}
+          />
+          <hr className="border-t border-dotted border-primaryBlue mt-16" />
+        </div>
+        <h1 className="text-xl font-extralight uppercase text-primaryBlue m-4">
+          Vehicle Transactions:
+          <span className="font-bold mr-2">&emsp;{transactionDate}</span>
+          <span className="mx-2">|</span>
+          <span className="font-extralight italic">
+            Total Vehicles: {vehicleData.length}
+          </span>
+        </h1>
+
+        <div className="overflow-auto mt-4 max-h-[400px]">
+          <table className="min-w-full bg-white border table-auto">
+            <thead className="bg-gray-200 sticky top-0 z-20">
+              <tr>
+                {headers.map((header, index) => (
+                  <th key={index} className="px-4 py-2 border text-sm">
+                    {header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+
+            <tbody>
+              {vehicleData.map((vehicle, index) => (
+                <tr
+                  key={index}
+                  className={`${getRowClass(vehicle.classification)} h-12`}
+                >
+                  <td className={tableDataClass}>
+                    {formatTimestamp(vehicle.timestamp)}
+                  </td>
+                  <td className={tableDataClass}>{vehicle.classification}</td>
+                  <td className={tableDataClass}>{vehicle.axles}</td>
+                  <td className={tableDataClass}>{vehicle.height}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   );
 };
 
-export default AuthForm;
+export default Dashboard;
