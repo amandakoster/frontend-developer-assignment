@@ -39,7 +39,7 @@ const AuthForm: React.FC = () => {
   };
 
   const inputClass =
-    "text-sm w-full p-4 hover:bg-neutral-300 placeholder-gray-300 hover:placeholder-white focus:outline-none transition duration-300";
+    "text-sm w-full p-4 hover:bg-neutral-400 placeholder-gray-400 hover:placeholder-white focus:outline-none transition duration-300";
 
   return (
     <div>
