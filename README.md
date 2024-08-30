@@ -1,6 +1,7 @@
-# Vehicle Data Dashboard
+# Vehicle Transaction Data Dashboard
 
-This project is a web application that displays vehicle data collected from a remote REST API. The application presents this data in a user-friendly dashboard that includes a table and a  doughnut chart data visualization with an informative Tooltip
+This project is a web application that displays vehicle data collected from a remote REST API. The application presents this data in a user-friendly dashboard that includes a table, doughnut chart, and scatter chart data visualizations, each equipped with informative tooltips.
+
 ## Table of Contents
 
 - [Features](#features)
@@ -17,9 +18,10 @@ This project is a web application that displays vehicle data collected from a re
 ## Features
 
 - **User Authentication:** Secure login and logout.
-- **Data Visualization:** Charts (doughnut, bar) to visualize vehicle data.
+- **Data Visualization:** Charts (doughnut, scatter) to visualize vehicle data with tooltips showing detailed information including vehicle percentages.
 - **Responsive Design:** Adapts to different screen sizes.
 - **Dynamic Data Fetching:** Periodically fetches updated data from the REST API.
+- **Date and Totals Display:** Displays the date of the transactions and the total number of vehicles next to the transaction header.
 - **Logout Confirmation:** Modal confirmation upon logout.
 - **Accessible Design:** Ensures accessibility in color choices and design elements.
 
@@ -31,7 +33,7 @@ To set up this project locally, follow these steps:
 
 ```bash
 git clone https://github.com/your-username/repository-name.git
-```
+
 
 ### 2. Install Dependencies
 
@@ -61,10 +63,13 @@ The application will be available at <http://localhost:3000>.
 - Data Visualization: Chart.js, React-Chartjs-2
 - State Management: React Hooks, Context API
 - Authentication: Custom authentication flow using the useAuth context
-- Date Manipulation: Moment.js Design Considerations Responsive Design:
-- Tailwind CSS is used to ensure the application is responsive across various devices.
-- Accessibility: Colors are chosen to meet accessibility standards for color contrast and differentiation.
-- User Experience: Includes confirmation modals and error handling to enhance user experience.
+- Date Manipulation: Moment.js
+
+## Design Considerations 
+- Responsive Design: Tailwind CSS is used to ensure the application is responsive across various devices.
+- Tooltip Design: Tooltips provide detailed information including both vehicle count and percentage.
+- Legend and Row Colors: Consistent color theming using Tailwind CSS for legends and table rows, with opacity adjustments.
+- User Experience: Includes confirmation modals and error handling to enhance user experience.- ce: Includes confirmation modals and error handling to enhance user experience.
 
 ## API Integration
 
@@ -81,6 +86,15 @@ The application fetches data from the following endpoint:
 [*Please ask a Backend Engineer for endpoint*]
 
 The data is returned in JSON format and includes fields like timestamp, classification, axles, and height.
+
+### Doughnut Chart
+
+The doughnut chart visualizes the distribution of vehicle classifications, providing a clear breakdown of the different types of vehicles recorded.
+
+### Scatter Chart
+
+The scatter chart visualizes vehicle axles against their height, providing insight into the distribution of vehicle types based on their physical dimensions.
+
 
 ### Sample API Response
 
@@ -121,6 +135,32 @@ Basic unit tests can be added using Jest or React Testing Library.
 ### Running Tests
 
 ```npm test```
+
+## Lighthouse Performance Results
+
+The application was tested using Google's Lighthouse tool. Below are the performance scores for different parts of the application:
+
+### Dashboard Page
+
+Dashboard Lighthouse Results
+
+- Performance: 85
+- Accessibility: 100
+- Best Practices: 81
+
+### Login Page
+
+Login Lighthouse Results
+
+- Performance: 97
+- Accessibility: 94
+- Best Practices: 100
+
+### Suggestions for Improvement
+
+- Eliminate render-blocking resources: Potential savings of 70 ms
+- Minify JavaScript: Potential savings of 77 KiB
+- Back/Forward Cache: Page prevented back/forward cache restoration due to three failure reasons
 
 ## License
 

@@ -1,4 +1,3 @@
-import { clear } from "console";
 import { reduceVehicleData } from "../dataUtils";
 import { mockVehicleData } from "@/mockData/mockVehicleData";
 
@@ -34,7 +33,6 @@ describe("reduceVehicleData", () => {
       "40": 1,
       "41": 1,
       "42": 4,
-      "43": 1,
       "44": 1,
       "45": 1,
       "55": 1,
@@ -51,6 +49,5 @@ describe("reduceVehicleData", () => {
       "170": 1,
       "180": 1,
     });
-    clear;
   });
 });

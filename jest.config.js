@@ -1,6 +1,5 @@
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'jsdom',
+  testEnvironment: 'jest-environment-jsdom',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
@@ -12,16 +11,16 @@ module.exports = {
   collectCoverage: true,
   coverageDirectory: 'coverage',
   coverageThreshold: {
-  global: {
-    branches: 0,
-    functions: 0,
-    lines: 0,
-    statements: 0,
+    global: {
+      branches: 0,
+      functions: 0,
+      lines: 0,
+      statements: 0,
+    },
   },
-},
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/**/*.d.ts',
   ],
-  coverageReporters: ['text', 'lcov'],  // Add 'text' for terminal output and 'lcov' for detailed HTML report
-};
+  coverageReporters: ['text', 'lcov'],
+}

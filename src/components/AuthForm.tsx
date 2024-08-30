@@ -42,16 +42,13 @@ const AuthForm: React.FC = () => {
     <div>
       <Image
         src="/images/auth.png"
-        alt="Branding"
+        alt="Image of highway with city in background"
         fill
-        objectFit="cover"
-        className="absolute inset-0 z-0 opacity-50"
-        priority
+        style={{ objectFit: "cover" }}
       />
       <div className="relative min-h-screen flex items-center justify-center">
         <div className="relative z-10 bg-lightGray p-10  shadow-lg transform scale-125">
           <h2 className="font-light text-lg uppercase text-gray-600 mb-4">
-            {/* {isAuthenticated ? "Logout" : "Login"} */}
             Welcome to Sinelec USA
           </h2>
           <form onSubmit={handleSubmit}>
