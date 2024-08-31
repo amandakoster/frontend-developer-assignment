@@ -55,6 +55,7 @@ const Dashboard: React.FC = () => {
   const [vehicleData, setVehicleData] = useState<VehicleData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState<boolean>(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -93,6 +94,12 @@ const Dashboard: React.FC = () => {
   const divClass = "flex flex-col justify-center items-center";
   const tableDataClass = "px-4 py-2 border text-sm";
 
+  const displayedData = showAll ? vehicleData : vehicleData.slice(0, 20);
+
+  const handleToggle = () => {
+    setShowAll((prev) => !prev);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <NavBar />
@@ -121,16 +128,30 @@ const Dashboard: React.FC = () => {
           />
           <hr className="border-t border-dotted border-primaryBlue mt-16" />
         </div>
-        <h1 className="text-xl font-extralight uppercase text-primaryBlue m-4">
-          Vehicle Transactions:
-          <span className="font-bold mr-2">&emsp;{transactionDate}</span>
-          <span className="mx-2">|</span>
-          <span className="font-extralight italic">
-            Total Vehicles: {vehicleData.length}
-          </span>
-        </h1>
 
-        <div className="overflow-auto mt-4 max-h-[400px]">
+        <div className="max-w-4xl mx-auto mb-4">
+          <h1 className="text-xl font-extralight uppercase text-primaryBlue mr-4">
+            Vehicle Transactions:
+            <span className="font-bold mr-2">&emsp;{transactionDate}</span>
+            <span className="mx-2">|</span>
+            <span className="font-extralight italic">
+              Total Vehicles:
+              <span className="font-bold mr-2">&emsp;{vehicleData.length}</span>
+            </span>
+          </h1>
+          <button
+            onClick={handleToggle}
+            className="text-sm mb-2 mt-4 p-2 bg-primaryBlue text-white hover:bg-secondary transition duration-300"
+          >
+            {showAll ? "Show First 20 Records" : "Show All Records"}
+          </button>
+        </div>
+
+        <div
+          className={`overflow-auto mt-4 ${
+            showAll ? "max-h-none" : "max-h-[400px]"
+          } max-w-4xl mx-auto`}
+        >
           <table className="min-w-full bg-white border table-auto">
             <thead className="bg-gray-200 sticky top-0 z-20">
               <tr>
@@ -141,9 +162,8 @@ const Dashboard: React.FC = () => {
                 ))}
               </tr>
             </thead>
-
             <tbody>
-              {vehicleData.map((vehicle, index) => (
+              {displayedData.map((vehicle, index) => (
                 <tr
                   key={index}
                   className={`${getRowClass(vehicle.classification)} h-12`}
