@@ -1,12 +1,12 @@
 module.exports = {
   testEnvironment: 'jest-environment-jsdom',
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
-  setupFiles: ['<rootDir>/jest.setup.ts'],
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   collectCoverage: true,

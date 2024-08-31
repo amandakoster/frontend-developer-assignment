@@ -8,7 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 import NavBar from "@/components/NavBar";
 import { fetchVehicleData } from "@/api/fetchVehicleData";
 import { VehicleData } from "@/types";
-import { DoughnutChart, ScatterChart } from "@/components/charts/Charts";
+import { DoughnutChart, ScatterChart } from "@/components/Charts";
 import ChartLegend from "@/components/ChartLegend";
 import { formatTimestamp } from "@/utils/dataUtils";
 
