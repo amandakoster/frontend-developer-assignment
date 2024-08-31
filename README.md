@@ -136,6 +136,35 @@ Basic unit tests can be added using Jest or React Testing Library.
 
 ```npm test```
 
+### Test Coverage
+
+The current test coverage for the project is as follows:
+
+File                    | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s  
+------------------------|---------|----------|---------|---------|--------------------
+All files               |    57.3 |    42.85 |      50 |   56.32 |                    
+ src                    |     100 |      100 |     100 |     100 |                    
+  types.ts              |     100 |      100 |     100 |     100 |                    
+ src/api                |    92.3 |       80 |     100 |   91.66 | 8                  
+ src/app                |       0 |        0 |       0 |       0 |                    
+  layout.tsx            |       0 |      100 |       0 |       0 | 1-20               
+  page.tsx              |       0 |        0 |       0 |       0 | 3-27               
+ src/app/dashboard      |       0 |        0 |       0 |       0 |                    
+  page.tsx              |       0 |        0 |       0 |       0 | 3-187              
+ src/components         |   88.04 |    85.71 |      90 |    87.5 |                    
+  AuthForm.tsx          |   87.09 |       60 |     100 |   86.66 | 20-21,29,34        
+  ChartLegend.tsx       |     100 |      100 |     100 |     100 |                    
+  Charts.tsx            |      75 |      100 |   66.66 |   73.07 | 84-86,147-150      
+  ConfirmationModal.tsx |     100 |      100 |     100 |     100 |                    
+  NavBar.tsx            |     100 |      100 |     100 |     100 |                    
+ src/context            |      50 |        0 |      25 |   44.44 |                    
+  AuthContext.tsx       |      50 |        0 |      25 |   44.44 | 20-24,29-30,41-45  
+ src/utils              |   67.79 |        0 |   45.83 |   65.45 |                    
+  colors.ts             |     100 |      100 |     100 |     100 |                    
+  dataUtils.ts          |   58.69 |        0 |   45.83 |   54.76 | 10-13,20-21,36-101 
+  mockVehicleData.ts    |     100 |      100 |     100 |     100 |                    
+------------------------|---------|----------|---------|---------|--------------------
+
 ## Lighthouse Performance Results
 
 The application was tested using Google's Lighthouse tool. Below are the performance scores for different parts of the application:
