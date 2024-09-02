@@ -17,7 +17,7 @@ This project is a web application that displays vehicle data collected from a re
 
 ## Features
 
-- **User Authentication:** Secure login and logout.
+- **User Authentication:** Secure login and logout using a custom authentication context that persists the user's session across page reloads.
 - **Data Visualization:** Charts (doughnut, scatter) to visualize vehicle data with tooltips showing detailed information including vehicle percentages.
 - **Responsive Design:** Adapts to different screen sizes.
 - **Dynamic Data Fetching:** Periodically fetches updated data from the REST API.
@@ -31,14 +31,12 @@ To set up this project locally, follow these steps:
 
 ### 1. Clone the Repository
 
-```bash
-git clone https://github.com/your-username/repository-name.git
-
+``` git clone https://github.com/your-username/repository-name.git ```
 
 ### 2. Install Dependencies
 
 Ensure you have Node.js installed, then run:
-```npm install```
+``` npm install ```
 
 ### 3. Set Up Environment Variables
 
@@ -65,7 +63,9 @@ The application will be available at <http://localhost:3000>.
 - Authentication: Custom authentication flow using the useAuth context
 - Date Manipulation: Moment.js
 
-## Design Considerations 
+## Design Considerations
+
+- Persistent Authentication: The application maintains user authentication state across page reloads by storing an authentication token in localStorage. This ensures that users do not need to log in again after refreshing the page, improving user experience.
 - Responsive Design: Tailwind CSS is used to ensure the application is responsive across various devices.
 - Tooltip Design: Tooltips provide detailed information including both vehicle count and percentage.
 - Legend and Row Colors: Consistent color theming using Tailwind CSS for legends and table rows, with opacity adjustments.
@@ -94,7 +94,6 @@ The doughnut chart visualizes the distribution of vehicle classifications, provi
 ### Scatter Chart
 
 The scatter chart visualizes vehicle axles against their height, providing insight into the distribution of vehicle types based on their physical dimensions.
-
 
 ### Sample API Response
 

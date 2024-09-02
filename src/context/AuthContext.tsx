@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 export interface AuthContextType {
   isAuthenticated: boolean;
@@ -13,7 +19,15 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Check if the auth token exists in localStorage
+    const token = localStorage.getItem("auth-token");
+    if (token) {
+      setLoggedIn(true);
+    }
+  }, []);
 
   const login = (username: string, password: string) => {
     // Mock implementation of login
