@@ -21,6 +21,7 @@ This project is a web application that displays vehicle data collected from a re
 - **Data Visualization:** Charts (doughnut, scatter) to visualize vehicle data with tooltips showing detailed information including vehicle percentages.
 - **Responsive Design:** Adapts to different screen sizes.
 - **Dynamic Data Fetching:** Periodically fetches updated data from the REST API.
+- **Automatic Data Refresh:** The data automatically refreshes every 5 seconds. This interval can be easily adjusted using an environment variable.
 - **Date and Totals Display:** Displays the date of the transactions and the total number of vehicles next to the transaction header.
 - **Logout Confirmation:** Modal confirmation upon logout.
 - **Accessible Design:** Ensures accessibility in color choices and design elements.
@@ -43,7 +44,11 @@ Ensure you have Node.js installed, then run:
 Create a .env file in the root directory and add any necessary environment variables:
 
 ``` NEXT_PUBLIC_API_URL= (get from Engineer) ```
-`` `NEXT_PUBLIC_LOGIN_ENDPOINT=/api/login ```
+
+You can control the data refresh interval by setting the `NEXT_PUBLIC_REFRESH_INTERVAL` environment variable in your `.env.local` file. The value is in milliseconds, and the default is set to 5000 (5 seconds).
+
+Example:
+``` NEXT_PUBLIC_REFRESH_INTERVAL=5000 ```
 
 ## Usage
 

@@ -48,6 +48,10 @@ const legendClassifications = [
   },
 ];
 
+const refreshInterval = parseInt(
+  process.env.NEXT_PUBLIC_REFRESH_INTERVAL || "5000"
+);
+
 const Dashboard: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
@@ -61,17 +65,25 @@ const Dashboard: React.FC = () => {
     if (!isAuthenticated) {
       router.push("./");
     } else {
-      fetchVehicleData()
-        .then((data) => {
-          setVehicleData(data);
-          setLoading(false);
-        })
-        .catch((error) => {
-          setError("Failed to load vehicle data");
-          setLoading(false);
-        });
+      const fetchData = () => {
+        fetchVehicleData()
+          .then((data) => {
+            setVehicleData(data);
+            setLoading(false);
+          })
+          .catch((error) => {
+            setError("Failed to load vehicle data");
+            setLoading(false);
+          });
+      };
+
+      fetchData(); // Initial fetch
+
+      const intervalId = setInterval(fetchData, refreshInterval); // Set up interval
+
+      return () => clearInterval(intervalId); // Cleanup interval on unmount
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, router]); // Removed refreshInterval from here
 
   if (!isAuthenticated) return null;
   if (loading) return <div>Loading...</div>;
@@ -93,7 +105,6 @@ const Dashboard: React.FC = () => {
 
   const divClass = "flex flex-col justify-center items-center";
   const tableDataClass = "px-4 py-2 border text-sm";
-
   const displayedData = showAll ? vehicleData : vehicleData.slice(0, 20);
 
   const handleToggle = () => {
