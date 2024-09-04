@@ -105,6 +105,7 @@ const Dashboard: React.FC = () => {
 
   const divClass = "flex flex-col justify-center items-center";
   const tableDataClass = "px-4 py-2 border text-sm";
+
   const displayedData = showAll ? vehicleData : vehicleData.slice(0, 20);
 
   const handleToggle = () => {

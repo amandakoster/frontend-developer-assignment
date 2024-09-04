@@ -30,8 +30,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   }, []);
 
   const login = (username: string, password: string) => {
-    // Mock implementation of login
-    if (username === "lar5" && password === "mari0") {
+    const envUsername = process.env.NEXT_PUBLIC_USERNAME;
+    const envPassword = process.env.NEXT_PUBLIC_PASSWORD;
+
+    if (username === envUsername && password === envPassword) {
       localStorage.setItem("auth-token", "mock-token");
       setLoggedIn(true);
     } else {
